@@ -4,7 +4,7 @@ use 5.006;
 use strict;
 use warnings;
 
-our $VERSION = '0.01';
+our $VERSION = '0.1';
 
 use Exporter qw/import/;
 our @EXPORT = qw/learn predict range save_state load_state/;
@@ -636,6 +636,9 @@ L<https://metacpan.org/release/Algorithm-Markov-Multiorder-Learner>
 
 
 =head1 ACKNOWLEDGEMENTS
+
+Aldebaran at L<www.PerlMonks.org> for testing and providing lots
+of useful feedback.
 
 
 =head1 LICENSE AND COPYRIGHT
