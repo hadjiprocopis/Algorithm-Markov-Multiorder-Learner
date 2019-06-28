@@ -336,6 +336,8 @@ sub	_default_process_line {
 		$howmany = 0;
 		my $temp;
 		#print "processing line '$line'\n";
+		# see johngg's comment at https://perlmonks.org/?node_id=11101277
+		# other methods there can be faster but this is simple
 		my @items = split $sepregex, $line;
 		my $N = -$ngram_length+scalar @items;
 		for($i=0;$i<=$N;$i++){
