@@ -435,15 +435,15 @@ Exported subs:
 
 =over 3
 
-=item C<learn()>
+=item *  C<learn()>
 
-=item C<predict()>
+=item *  C<predict()>
 
-=item C<save_state()>
+=item *  C<save_state()>
 
-=item C<load_state()>
+=item *  C<load_state()>
 
-=item C<range()>
+=item *  C<range()>
 
 =back
 

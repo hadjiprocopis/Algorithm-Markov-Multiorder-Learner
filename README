@@ -61,15 +61,15 @@ EXPORT
 
     Exported subs:
 
-    learn()
+      * learn()
 
-    predict()
+      * predict()
 
-    save_state()
+      * save_state()
 
-    load_state()
+      * load_state()
 
-    range()
+      * range()
 
     Also see the included scripts:
 
