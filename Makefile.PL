@@ -15,6 +15,14 @@ WriteMakefile(
     CONFIGURE_REQUIRES => {
         'ExtUtils::MakeMaker' => '0',
     },
+    EXE_FILES        => [
+	'bin/analyse_text.pl',
+	'bin/analyse_image.pl',
+	'bin/analyse_DNA_sequence.pl',
+	'bin/predict_image.pl',
+	'bin/predict_text.pl',
+	'bin/read_state.pl',
+    ],
     BUILD_REQUIRES => {
         'Test::More' => '0',
     },

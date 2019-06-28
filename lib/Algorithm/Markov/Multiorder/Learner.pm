@@ -335,23 +335,14 @@ sub	_default_process_line {
 		# we have a separator, so we need to regex
 		$howmany = 0;
 		my $temp;
-print "processing line '$line'\n";
+		#print "processing line '$line'\n";
 		my @items = split $sepregex, $line;
 		my $N = -$ngram_length+scalar @items;
 		for($i=0;$i<=$N;$i++){
+			#print "i=$i, N=$N, tex='".join($intsep, @items[$i..$i+$ngram_length-1])."'\n";
 			$output_ref->{join $intsep, @items[$i..$i+$ngram_length-1]}++;
 			$howmany++;
 		}
-#		while( scalar @items >= $ngram_length ){
-#			$temp = @items[0 .. 
-#		while( $line =~ /(((.+?)(?=${sep}|$)){${ngram_length}})/g ){
-#			# convert A B C  to A|B|C
-#			$temp = $1; 
-#			$temp =~ s/^${sep}//; $temp =~ s/${sep}/${intsep}/g;
-#print "temp1=$temp\n";
-#			$output_ref->{$temp}++;
-#			$howmany++;
-#		}
 	} else {
 		$howmany = length($line)-$ngram_length+1;
 		for(my $from=$howmany;$from-->0;){
@@ -363,11 +354,11 @@ print "processing line '$line'\n";
 sub _default_filter_line {
 	# default line-filter sub, removes dup spaces and beg/end-of-line spaces
 	# expecting scalar ref of the line so we can modify in-place
-print "filtering line '${$_[0]}' => ";
+	#print "filtering line '${$_[0]}' => ";
 	${$_[0]} =~ s/\s+/ /g;
 	${$_[0]} =~ s/\s+$//;
 	${$_[0]} =~ s/^\s//;
-print "'${$_[0]}'\n";
+	#print "'${$_[0]}'\n";
 	return 0 if ${$_[0]} =~ /^\s*$/; # nothing to do, empty, skip
 	return 1 # ok processed and modified in-place, means line is not empty
 }
