@@ -380,7 +380,7 @@ sub _convert_text_to_paragraphs {
 
 =head1 NAME
 
-Algorithm::Markov::Multiorder::Learner - The great new Algorithm::Markov::Multiorder::Learner!
+Algorithm::Markov::Multiorder::Learner - Learn a corpus and predict using a multi-order (multi-dimensional)  Markov learner
 
 =head1 VERSION
 
@@ -389,113 +389,85 @@ Version 0.01
 
 =head1 SYNOPSIS
 
-Quick summary of what the module does.
+The idea has been explored many times in the past read a corpus, originally text but we
+have expanded it to images and DNA sequences, build a Markov Chain by
+counting how many times a word is followed / preceded by another and then predict what word
+follows a given word. It has also been extended to cover an order N E<gt> 1 meaning Ngrams.
+The Markov process (named after greatest Mathematician Andrey Markov who was born Russian and died Soviet)
+is a process which holds the Markov property which means that a system's state can be predicted
+based only on current state. One observes the system's behaviour and builds a matrix of transition
+probabilities describing the transition from S(t) -> S(t+1). Such a matrix can be built
+by first building a 2D histogram and then normalising over the space of events.
 
-Perhaps a little code snippet.
+For predicting text, we still use the term Markov but we are using a sequence of length N,
+hence the term Ngram.
+
+This module takes some input data and N and calculates the transition probabilities (matrix) between
+observed states. This is the learning phase. The transition matrix is called the "state"
+and can be serialised to disk. During the predict phase, a "state" is read and spews out symbols
+given a sequence of N-1 symbols according to the transition probabilities in the "state".
+
+What this module does not do very well is splitting a text into words. It is bearable but
+can be improved by, for example, employing another module to convert a "text" to words.
+The user can specify their own word-boundaries in the form of regexes. And also ask
+to learn text in paragraph-by-paragraph mode as opposed to line-by-line which is the default.
+
+Here is something to get you started:
 
     use Algorithm::Markov::Multiorder::Learner;
+    my $state = learn({
+        'ngram-length' => 8,
+        'separator' => qq{[-%!\:,;+*\\s\\t.]+},
+        # filter all characters except a-zA-Z
+        #'remove-these-characters-regex' => qr/[^a-zA-Z]/
+        'input-filename' => 'shelley-frankestein.txt'
+        # paragraph-by-paragraph mode, default is line-by-line
+        #'process-paragraphs' => 1
+    });
+    die "learn()" unless $state;
+    save_state($state, "output.state");
 
-    my $foo = Algorithm::Markov::Multiorder::Learner->new();
-    ...
+There are also scripts to analyse text, DNA or images in the "bin" directory.
 
 =head1 EXPORT
 
-A list of functions that can be exported.  You can delete this section
-if you don't export anything, such as for a purely object-oriented module.
+Exported subs:
 
-=head1 SUBROUTINES/METHODS
+=over 3
 
-=head2 function1
+=item C<learn()>
 
-=head2 function2
+=item C<predict()>
 
-=head1 AUTHOR
+=item C<save_state()>
 
-Andreas Hadjiprocopis, C<< <bliako at cpan.org> >>
+=item C<load_state()>
 
-=head1 BUGS
-
-Please report any bugs or feature requests to C<bug-algorithm-markov-multiorder-learner at rt.cpan.org>, or through
-the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Algorithm-Markov-Multiorder-Learner>.  I will be notified, and then you'll
-automatically be notified of progress on your bug as I make changes.
-
-
-
-
-=head1 SUPPORT
-
-You can find documentation for this module with the perldoc command.
-
-    perldoc Algorithm::Markov::Multiorder::Learner
-
-
-You can also look for information at:
-
-=over 4
-
-=item * RT: CPAN's request tracker (report bugs here)
-
-L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=Algorithm-Markov-Multiorder-Learner>
-
-=item * AnnoCPAN: Annotated CPAN documentation
-
-L<http://annocpan.org/dist/Algorithm-Markov-Multiorder-Learner>
-
-=item * CPAN Ratings
-
-L<https://cpanratings.perl.org/d/Algorithm-Markov-Multiorder-Learner>
-
-=item * Search CPAN
-
-L<https://metacpan.org/release/Algorithm-Markov-Multiorder-Learner>
+=item C<range()>
 
 =back
 
+Also see the included scripts:
 
-=head1 ACKNOWLEDGEMENTS
+=over 3
 
+=item * analyse_DNA_sequence.pl
 
-=head1 LICENSE AND COPYRIGHT
+=item * analyse_image.pl
 
-Copyright 2019 Andreas Hadjiprocopis.
+=item * analyse_text.pl
 
-This program is free software; you can redistribute it and/or modify it
-under the terms of the the Artistic License (2.0). You may obtain a
-copy of the full license at:
+=item * predict_image.pl
 
-L<http://www.perlfoundation.org/artistic_license_2_0>
+=item * predict_text.pl
 
-Any use, modification, and distribution of the Standard or Modified
-Versions is governed by this Artistic License. By using, modifying or
-distributing the Package, you accept this license. Do not use, modify,
-or distribute the Package, if you do not accept this license.
+=item * read_state.pl
 
-If your Modified Version has been derived from a Modified Version made
-by someone other than you, you are nevertheless required to ensure that
-your Modified Version complies with the requirements of this license.
+=back
 
-This license does not grant you the right to use any trademark, service
-mark, tradename, or logo of the Copyright Holder.
+=head1 SUBROUTINES/METHODS
 
-This license includes the non-exclusive, worldwide, free-of-charge
-patent license to make, have made, use, offer to sell, sell, import and
-otherwise transfer the Package with respect to any patent claims
-licensable by the Copyright Holder that are necessarily infringed by the
-Package. If you institute patent litigation (including a cross-claim or
-counterclaim) against any party alleging that the Package constitutes
-direct or contributory patent infringement, then this Artistic License
-to you shall terminate on the date that such litigation is filed.
-
-Disclaimer of Warranty: THE PACKAGE IS PROVIDED BY THE COPYRIGHT HOLDER
-AND CONTRIBUTORS "AS IS' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES.
-THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
-PURPOSE, OR NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY
-YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
-CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
-CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
-EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
-
-
+=head2 learn()
 C<learn()> reads in some raw data from either a
 file (given C<input-filename> parameter)
 or a scalar/string reference (give C<input-string>).
@@ -605,4 +577,98 @@ The sub returns a hashref made of these three hashrefs
 'twisted-dist' => as explained before.
 'cum-twisted-dist' => as explained before.
 Refer to the 'predict()' sub for how the 'cum-twisted-dist' hash is used to make a prediction.
+
+
+=head2 predict()
+
+=head1 AUTHOR
+
+Andreas Hadjiprocopis, C<< <bliako at cpan.org> >>
+
+=head1 HUGS AND DEDICATIONS
+
+Almaz
+
+=head1 BUGS
+
+Please report any bugs or feature requests to C<bug-algorithm-markov-multiorder-learner at rt.cpan.org>, or through
+the web interface at L<https://rt.cpan.org/NoAuth/ReportBug.html?Queue=Algorithm-Markov-Multiorder-Learner>.  I will be notified, and then you'll
+automatically be notified of progress on your bug as I make changes.
+
+
+
+
+=head1 SUPPORT
+
+You can find documentation for this module with the perldoc command.
+
+    perldoc Algorithm::Markov::Multiorder::Learner
+
+
+You can also look for information at:
+
+=over 4
+
+=item * RT: CPAN's request tracker (report bugs here)
+
+L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=Algorithm-Markov-Multiorder-Learner>
+
+=item * AnnoCPAN: Annotated CPAN documentation
+
+L<http://annocpan.org/dist/Algorithm-Markov-Multiorder-Learner>
+
+=item * CPAN Ratings
+
+L<https://cpanratings.perl.org/d/Algorithm-Markov-Multiorder-Learner>
+
+=item * Search CPAN
+
+L<https://metacpan.org/release/Algorithm-Markov-Multiorder-Learner>
+
+=back
+
+
+=head1 ACKNOWLEDGEMENTS
+
+
+=head1 LICENSE AND COPYRIGHT
+
+Copyright 2019 Andreas Hadjiprocopis.
+
+This program is free software; you can redistribute it and/or modify it
+under the terms of the the Artistic License (2.0). You may obtain a
+copy of the full license at:
+
+L<http://www.perlfoundation.org/artistic_license_2_0>
+
+Any use, modification, and distribution of the Standard or Modified
+Versions is governed by this Artistic License. By using, modifying or
+distributing the Package, you accept this license. Do not use, modify,
+or distribute the Package, if you do not accept this license.
+
+If your Modified Version has been derived from a Modified Version made
+by someone other than you, you are nevertheless required to ensure that
+your Modified Version complies with the requirements of this license.
+
+This license does not grant you the right to use any trademark, service
+mark, tradename, or logo of the Copyright Holder.
+
+This license includes the non-exclusive, worldwide, free-of-charge
+patent license to make, have made, use, offer to sell, sell, import and
+otherwise transfer the Package with respect to any patent claims
+licensable by the Copyright Holder that are necessarily infringed by the
+Package. If you institute patent litigation (including a cross-claim or
+counterclaim) against any party alleging that the Package constitutes
+direct or contributory patent infringement, then this Artistic License
+to you shall terminate on the date that such litigation is filed.
+
+Disclaimer of Warranty: THE PACKAGE IS PROVIDED BY THE COPYRIGHT HOLDER
+AND CONTRIBUTORS "AS IS' AND WITHOUT ANY EXPRESS OR IMPLIED WARRANTIES.
+THE IMPLIED WARRANTIES OF MERCHANTABILITY, FITNESS FOR A PARTICULAR
+PURPOSE, OR NON-INFRINGEMENT ARE DISCLAIMED TO THE EXTENT PERMITTED BY
+YOUR LOCAL LAW. UNLESS REQUIRED BY LAW, NO COPYRIGHT HOLDER OR
+CONTRIBUTOR WILL BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, OR
+CONSEQUENTIAL DAMAGES ARISING IN ANY WAY OUT OF THE USE OF THE PACKAGE,
+EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.
+
 

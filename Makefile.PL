@@ -4,7 +4,7 @@ use warnings;
 use ExtUtils::MakeMaker;
 
 WriteMakefile(
-#    INSTALL_BASE      => "$ENV{HOME}/usr",
+    INSTALL_BASE      => "$ENV{HOME}/usr",
     NAME             => 'Algorithm::Markov::Multiorder::Learner',
     AUTHOR           => q{Andreas Hadjiprocopis <bliako@cpan.org>},
     VERSION_FROM     => 'lib/Algorithm/Markov/Multiorder/Learner.pm',
@@ -27,8 +27,7 @@ WriteMakefile(
         'Test::More' => '0',
     },
     PREREQ_PM => {
-        #'ABC'              => '1.6',
-        #'Foo::Bar::Module' => '5.0401',
+	'Storable' => '3.10'
     },
     dist  => { COMPRESS => 'gzip -9f', SUFFIX => 'gz', },
     clean => { FILES => 'Algorithm-Markov-Multiorder-Learner-*' },
