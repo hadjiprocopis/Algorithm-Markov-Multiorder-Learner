@@ -468,6 +468,7 @@ Also see the included scripts:
 =head1 SUBROUTINES/METHODS
 
 =head2 learn()
+
 C<learn()> reads in some raw data from either a
 file (given C<input-filename> parameter)
 or a scalar/string reference (give C<input-string>).
@@ -488,6 +489,8 @@ In this case just you have several options:
 =item C<input-array-ngrams> : a ref to an array of arrays of I<ngrams>, i.e. a collection of N symbols, where N-1 is the order of the Markov Chain we are trying to build.
 
 =item C<process-line-subref> : a ref to a sub which process each line, its prototype is C<($lineref, $counts_hash_ref, $ngram_length, $separator, $internal_separator, $filter_sub_ref)>
+
+=back
 
 Related to the C<process-line-subref> parameter is C<filter-line-subref>
 which pre-process the line, e.g. to remove duplicate spaces. Or in
@@ -526,10 +529,6 @@ to avoid C<counts> hash in order to save memory. Or one
 may need C<all> data structures.
 
 Parameter C<debug> makes the sub more verbose.
-
-or it works character-by-character if the separator is left C<undef>,
-
-=item it eventually will have symbols.
 
 These symbols can be words in text (if separator = word boundary='\b')
 Or they can be letters in text (if separator is left undefined)
@@ -612,6 +611,14 @@ You can also look for information at:
 =item * RT: CPAN's request tracker (report bugs here)
 
 L<https://rt.cpan.org/NoAuth/Bugs.html?Dist=Algorithm-Markov-Multiorder-Learner>
+
+=item * Wikipedia entry on the Markov Property
+
+L<https://en.wikipedia.org/wiki/Markov_property>
+
+=item * Similar modules at CPAN in no particular order
+
+L<Algorithm::MarkovChain>, L<Hailo>, L<String::Markov>, L<Decision::Markov>
 
 =item * AnnoCPAN: Annotated CPAN documentation
 
