@@ -1,4 +1,3 @@
-.BACKUP/28.06.2019_13.28.tgz
 bin/analyse_DNA_sequence.pl
 bin/analyse_image.pl
 bin/analyse_text.pl
