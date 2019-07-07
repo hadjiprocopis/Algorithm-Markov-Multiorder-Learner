@@ -637,8 +637,9 @@ L<https://metacpan.org/release/Algorithm-Markov-Multiorder-Learner>
 
 =head1 ACKNOWLEDGEMENTS
 
-Aldebaran at L<www.PerlMonks.org> for testing and providing lots
-of useful feedback.
+Aldebaran (L<https://perlmonks.org/?node=Aldebaran>)
+at L<www.PerlMonks.org> for testing and providing lots
+and lots of useful feedback.
 
 
 =head1 LICENSE AND COPYRIGHT
